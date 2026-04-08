@@ -1,0 +1,2 @@
+●	Entidades: tb_vei_veiculo (PK: vei_codigo), tb_aba_abastecimento (FK: vei_codigo), tb_via_viagem.
+        ●	Atributos Chave: vei_placa, aba_valor_pago, aba_dt_abastecimento, via_km_saida.
