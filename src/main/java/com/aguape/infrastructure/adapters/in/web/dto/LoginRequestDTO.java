@@ -1,5 +1,7 @@
 package com.aguape.infrastructure.adapters.in.web.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 import java.time.LocalDateTime;
 
 public record LoginRequestDTO(
@@ -8,19 +10,7 @@ public record LoginRequestDTO(
 ) {}
 
 
-// LoginResponseDTO.java
-public record LoginResponseDTO(
-        String token,
-        String name,
-        String role
-) {}
 
 
-// UserResponseDTO.java
-public record UserResponseDTO(
-        String id,
-        String name,
-        String email,
-        String role,
-        LocalDateTime createdAt
-) {}
+
+

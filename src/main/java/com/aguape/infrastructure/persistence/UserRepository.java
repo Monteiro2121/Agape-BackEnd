@@ -1,9 +1,11 @@
-package com.agape.reportflow.infrastructure.persistence;
+package com.aguape.infrastructure.persistence;
 
-import com.agape.reportflow.domain.model.User;
+import com.aguape.domain.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<User, String> {
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 }

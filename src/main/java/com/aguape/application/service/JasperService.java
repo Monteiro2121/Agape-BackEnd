@@ -19,7 +19,7 @@ public class JasperService {
         JasperReport jasperReport = JasperCompileManager.compileReport(input);
 
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("titulo", "Relatório de Usuários SEAD");
+        parameters.put("titulo", "Relatório de Usuários Agape");
 
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(usuarios);
 
