@@ -1,4 +1,4 @@
 package com.aguape.config;
 
-public class CorsConfig {
+public class SecurityConfig {
 }
