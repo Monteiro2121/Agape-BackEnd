@@ -1,4 +1,8 @@
 package com.aguape.infra.model;
 
-public class StatusOperacao {
+public enum StatusOperacao {
+    ATIVO,
+    EM_MANUTENCAO,
+    INATIVO,
+    DISPONIVEL
 }

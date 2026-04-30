@@ -1,3 +1,5 @@
+package com.aguape.controller;
+
 import com.aguape.dto.IndicadoresDTO;
 import com.aguape.service.DashboardService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,7 +20,7 @@ public class DashboardController {
 
     @Autowired
     private DashboardService service;
-
+    //o primeiro endpoint q eu tinha feito
     @Operation(summary = "Busca indicadores principais", description = "Retorna consumo, KM e viagens filtrados")
     @GetMapping("/indicadores")
     public ResponseEntity<IndicadoresDTO> getIndicadores(

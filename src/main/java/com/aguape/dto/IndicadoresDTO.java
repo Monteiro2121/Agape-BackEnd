@@ -7,3 +7,4 @@ public record IndicadoresDTO(
         Double totalKmPercorridos,
         Integer viagensRealizadas
 ) {}
+
