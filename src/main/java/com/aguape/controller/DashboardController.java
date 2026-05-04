@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 
-// 👇 IMPORTS NOVOS
+// IMPORTS NOVOS
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -27,17 +27,17 @@ public class DashboardController {
             @RequestParam LocalDate dataInicio,
             @RequestParam LocalDate dataFim) {
 
-        // 🔐 PEGA USUÁRIO LOGADO
+        // Pega Usuário logado
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        // 🔐 VERIFICA PERFIL
+        // Verifica perfil
         if (auth == null || auth.getAuthorities().stream()
                 .noneMatch(a -> a.getAuthority().equals("AgFrota"))) {
 
             return ResponseEntity.status(403).body("Acesso negado");
         }
 
-        // ✅ LIBERADO
+        //LIBERADO
         return ResponseEntity.ok(service.buscarIndicadores(dataInicio, dataFim));
     }
 }
