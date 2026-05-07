@@ -20,7 +20,7 @@ public class DashboardController {
 
     @Autowired
     private DashboardService service;
-    //o primeiro endpoint q eu tinha feito
+
     @Operation(summary = "Busca indicadores principais", description = "Retorna consumo, KM e viagens filtrados")
     @GetMapping("/indicadores")
     public ResponseEntity<IndicadoresDTO> getIndicadores(
