@@ -1,21 +1,15 @@
-package com.aguape.infra.model;
+package com.aguape.infra.model; // Verifique se o nome da pasta é 'model' ou 'entity'
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
-@Data
+@Table(name = "veiculos") // ou o nome da tabela no banco da Ágape
+@Getter @Setter
 public class Veiculo {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String placa;
-    private String modelo;
     private String status;
-
 }
