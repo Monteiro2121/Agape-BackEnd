@@ -38,11 +38,22 @@ public class PainelService {
     }
 
     public List<ConsumoMensalDTO> buscarEvolucaoConsumo(Long veiculoId) {
-        return abastecimentoRepository.buscarConsumoMensal(veiculoId);
+        List<Object[]> resultados = abastecimentoRepository.buscarConsumoMensal(veiculoId);
+        return resultados.stream()
+                .map(obj -> new ConsumoMensalDTO((String) obj[0], ((Number) obj[1]).doubleValue()))
+                .toList();
     }
 
     public List<PostoPrecoDTO> buscarRankingPostos() {
-        return abastecimentoRepository.buscarMediaPrecosPostos();
+        List<Object[]> resultados = abastecimentoRepository.buscarMediaPrecosPostosNativo();
+
+        return resultados.stream()
+                .map(obj -> {
+                    Long postoId = ((Number) obj[0]).longValue();
+                    Double media = ((Number) obj[1]).doubleValue();
+                    return new PostoPrecoDTO(postoId, media); // AQUI você chama o construtor real
+                })
+                .toList();
     }
 
     public List<QuilometragemDTO> buscarDadosQuilometragem(Long veiculoId) {

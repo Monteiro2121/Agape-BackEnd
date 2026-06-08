@@ -3,29 +3,26 @@ package com.aguape.infra.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "abastecimentos") // Confirme se o nome da tabela no banco é este
+@Table(name = "tb_aba_abastecimento", schema = "agfrota")
 @Getter
 @Setter
 public class Abastecimento {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "aba_codigo")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "veiculo_id") // Nome da coluna que liga ao veículo
-    private Veiculo veiculo;
+    @Column(name = "aba_quantidade")
+    private Double quantidade;
 
-    private LocalDate data;
+    @Column(name = "aba_valor_pago")
+    private Double valorPago;
 
-    @Column(name = "valor_total")
-    private Double valorTotal;
+    @Column(name = "aba_dt_abastecimento")
+    private LocalDateTime dataAbastecimento;
 
-    @Column(name = "valor_litro")
-    private Double valorLitro;
-
-    private String posto;
+    @Column(name = "pab_codigo")
+    private Long pabCodigo; // ID do posto
 }

@@ -21,7 +21,8 @@ public class CorsConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().permitAll()
-                );
+                )
+                .headers(headers -> headers.frameOptions(frame -> frame.disable()));
         return http.build();
     }
 
