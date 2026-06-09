@@ -1,5 +1,6 @@
 package com.aguape.infra.repository;
 
+import com.aguape.infra.model.StatusOperacao;
 import com.aguape.infra.model.Veiculo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -7,5 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface VeiculoRepository extends JpaRepository<Veiculo, Long> {
 
-    long countByStatus(String status);
+    long countByStatus(StatusOperacao status);
 }

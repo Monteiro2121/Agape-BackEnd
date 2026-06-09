@@ -18,8 +18,11 @@ public interface AbastecimentoRepository extends JpaRepository<Abastecimento, Lo
             "ORDER BY 1", nativeQuery = true)
     List<Object[]> buscarConsumoMensal(@Param("veiculoId") Long veiculoId);
 
-    @Query(value = "SELECT pab_codigo, AVG(aba_valor_pago / aba_quantidade) " +
+    @Query(value = "SELECT pab_codigo, AVG(aba_valor_pago / NULLIF(aba_quantidade, 0)) as preco_medio " +
             "FROM agfrota.tb_aba_abastecimento " +
-            "GROUP BY pab_codigo", nativeQuery = true)
+            "WHERE pab_codigo IS NOT NULL AND aba_quantidade > 0 " +
+            "GROUP BY pab_codigo " +
+            "ORDER BY preco_medio ASC " +
+            "LIMIT 5", nativeQuery = true)
     List<Object[]> buscarMediaPrecosPostosNativo();
 }

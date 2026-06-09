@@ -54,4 +54,9 @@ public class PainelController {
             @RequestParam(required = false) Long veiculoId) {
         return ResponseEntity.ok(painelService.calcularStatusFrota(veiculoId));
     }
+
+    @GetMapping(value = "/postos-melhor-preco", produces = "application/json")
+    public ResponseEntity<List<PostoPrecoDTO>> buscarPostosMelhorPreco() {
+        return ResponseEntity.ok(painelService.buscarRankingPostos());
+    }
 }

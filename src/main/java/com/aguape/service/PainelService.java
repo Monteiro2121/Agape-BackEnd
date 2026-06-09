@@ -2,6 +2,7 @@ package com.aguape.service;
 
 import com.aguape.dto.*;
 
+import com.aguape.infra.model.StatusOperacao;
 import com.aguape.infra.repository.AbastecimentoRepository;
 import com.aguape.infra.repository.VeiculoRepository;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class PainelService {
                 4.85,
                 5420.0,  // KM Total
                 124,     // Viagens
-                Map.of("Operando", veiculoRepository.countByStatus("OPERANDO")),
+                Map.of("Operando", veiculoRepository.countByStatus(StatusOperacao.ATIVO)),
                 92.5     // Disponibilidade
         );
     }
@@ -49,9 +50,9 @@ public class PainelService {
 
         return resultados.stream()
                 .map(obj -> {
-                    Long postoId = ((Number) obj[0]).longValue();
+                    String nome = String.valueOf(obj[0]); // Transforma o Integer em String "1", "2", etc.
                     Double media = ((Number) obj[1]).doubleValue();
-                    return new PostoPrecoDTO(postoId, media); // AQUI você chama o construtor real
+                    return new PostoPrecoDTO(nome, media);
                 })
                 .toList();
     }
@@ -64,9 +65,9 @@ public class PainelService {
     }
 
     public StatusFrotaDTO calcularStatusFrota(Long veiculoId) {
-        int operando = (int) veiculoRepository.countByStatus("OPERANDO");
-        int manutencao = (int) veiculoRepository.countByStatus("MANUTENCAO");
-        int parados = (int) veiculoRepository.countByStatus("PARADO");
+        int operando = (int) veiculoRepository.countByStatus(StatusOperacao.ATIVO);
+        int manutencao = (int) veiculoRepository.countByStatus(StatusOperacao.EM_MANUTENCAO);
+        int parados = (int) veiculoRepository.countByStatus(StatusOperacao.INATIVO);
 
         double disponibilidade = 0.0;
         int total = operando + manutencao + parados;
