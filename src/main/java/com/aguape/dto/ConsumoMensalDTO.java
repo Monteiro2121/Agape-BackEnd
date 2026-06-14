@@ -6,11 +6,10 @@ import lombok.Setter;
 @Getter @Setter
 public class ConsumoMensalDTO {
     private String mes;
-    private Double valor;
+    private Double valorConsumo; // Mudei de 'valor' para 'valorConsumo' para bater com seu front
 
-    // ESTE CONSTRUTOR É OBRIGATÓRIO E DEVE SER PÚBLICO
-    public ConsumoMensalDTO(String mes, Double valor) {
+    public ConsumoMensalDTO(String mes, Double valorConsumo) {
         this.mes = mes;
-        this.valor = valor;
+        this.valorConsumo = valorConsumo;
     }
 }

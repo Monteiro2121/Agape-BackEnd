@@ -1,4 +1,5 @@
 package com.aguape.controller;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -7,10 +8,6 @@ import com.aguape.service.PainelService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/painel")
@@ -37,26 +34,47 @@ public class PainelController {
         return ResponseEntity.ok(resumo);
     }
 
+    // Adicionado dataInicio e dataFim
     @GetMapping("/consumo-combustivel")
     public ResponseEntity<List<ConsumoMensalDTO>> buscarConsumoMensal(
-            @RequestParam(required = false) Long veiculoId) {
-        return ResponseEntity.ok(painelService.buscarEvolucaoConsumo(veiculoId));
+            @RequestParam(required = false) Long veiculoId,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim) {
+        return ResponseEntity.ok(painelService.buscarEvolucaoConsumo(veiculoId, dataInicio, dataFim));
     }
 
+    // Adicionado dataInicio e dataFim
     @GetMapping("/quilometragem")
     public ResponseEntity<List<QuilometragemDTO>> buscarQuilometragem(
-            @RequestParam(required = false) Long veiculoId) {
-        return ResponseEntity.ok(painelService.buscarDadosQuilometragem(veiculoId));
+            @RequestParam(required = false) Long veiculoId,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim) {
+        return ResponseEntity.ok(painelService.buscarDadosQuilometragem(veiculoId, dataInicio, dataFim));
     }
 
+    // Adicionado dataInicio e dataFim
     @GetMapping("/status-veiculo")
     public ResponseEntity<StatusFrotaDTO> buscarStatusFrota(
-            @RequestParam(required = false) Long veiculoId) {
-        return ResponseEntity.ok(painelService.calcularStatusFrota(veiculoId));
+            @RequestParam(required = false) Long veiculoId,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim) {
+        return ResponseEntity.ok(painelService.calcularStatusFrota(veiculoId, dataInicio, dataFim));
     }
 
+    // Adicionado veiculoId, dataInicio e dataFim para receber o filtro do front
     @GetMapping(value = "/postos-melhor-preco", produces = "application/json")
-    public ResponseEntity<List<PostoPrecoDTO>> buscarPostosMelhorPreco() {
-        return ResponseEntity.ok(painelService.buscarRankingPostos());
+    public ResponseEntity<List<PostoPrecoDTO>> buscarPostosMelhorPreco(
+            @RequestParam(required = false) Long veiculoId,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim) {
+        return ResponseEntity.ok(painelService.buscarRankingPostos(veiculoId, dataInicio, dataFim));
+    }
+
+    @GetMapping("/indicadores")
+    public ResponseEntity<ResumoPainelDTO> buscarIndicadores(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim) {
+
+        return ResponseEntity.ok(painelService.gerarResumo(null, dataInicio, dataFim));
     }
 }

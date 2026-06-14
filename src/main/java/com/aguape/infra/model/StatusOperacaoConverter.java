@@ -14,7 +14,6 @@ public class StatusOperacaoConverter implements AttributeConverter<StatusOperaca
             case EM_MANUTENCAO -> "M";
             case INATIVO -> "I";
             case DISPONIVEL -> "D";
-            default -> null;
         };
     }
 
@@ -22,14 +21,12 @@ public class StatusOperacaoConverter implements AttributeConverter<StatusOperaca
     public StatusOperacao convertToEntityAttribute(String dbData) {
         if (dbData == null || dbData.isBlank()) return null;
 
-        // O .toUpperCase() garante que "i" ou "I" funcionem
-        return switch (dbData.toUpperCase()) {
-            case "A" -> StatusOperacao.ATIVO;
+        return switch (dbData.trim().toUpperCase()) {
+            case "A", "V" -> StatusOperacao.ATIVO;
             case "M" -> StatusOperacao.EM_MANUTENCAO;
             case "I" -> StatusOperacao.INATIVO;
             case "D" -> StatusOperacao.DISPONIVEL;
-            case "V" -> StatusOperacao.ATIVO; // Mapeie o "V" para algo válido (ex: ATIVO)
-            default -> null; // Em vez de erro, retorna null e o sistema não trava
+            default -> null;
         };
     }
 }

@@ -8,18 +8,20 @@ public enum StatusOperacao {
     INATIVO,
     DISPONIVEL;
 
-    // Isso ajuda a evitar o erro ao converter do banco/JSON
     @JsonCreator
     public static StatusOperacao fromString(String value) {
-        if (value == null) return null;
-        switch (value.toUpperCase()) {
+        if (value == null || value.isBlank()) return null;
+
+        switch (value.trim().toUpperCase()) {
+            case "A": return ATIVO;
+            case "M": return EM_MANUTENCAO;
             case "I": return INATIVO;
             case "D": return DISPONIVEL;
             default:
                 try {
-                    return StatusOperacao.valueOf(value.toUpperCase());
+                    return StatusOperacao.valueOf(value.trim().toUpperCase());
                 } catch (IllegalArgumentException e) {
-                    return null; // Ou lance uma exceção mais amigável
+                    return null;
                 }
         }
     }
