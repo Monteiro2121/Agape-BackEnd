@@ -18,9 +18,26 @@ public class ResumoPainelDTO {
         this.disponibilidade = disponibilidade;
     }
 
+    // Seu getter que já existia
     public Double getCustoMedioKm() {
         return this.custoMedioPorKm;
     }
 
+    // --- ADICIONE ESSES GETTERS ABAIXO PARA MATAR O ERRO DE COMPILAÇÃO ---
 
+    public Double getKmTotal() {
+        return this.kmTotal;
+    }
+
+    public Integer getTotalViagens() {
+        return this.totalViagens;
+    }
+
+    public Map<String, Long> getStatus() {
+        return this.status;
+    }
+
+    public Double getDisponibilidade() {
+        return this.disponibilidade;
+    }
 }

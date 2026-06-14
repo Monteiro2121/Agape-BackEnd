@@ -45,4 +45,12 @@ public interface ViagemRepository extends JpaRepository<Viagem, Long> {
             @Param("dataInicio") LocalDate dataInicio,
             @Param("dataFim") LocalDate dataFim
     );
+
+    // Adicione estes métodos no seu ViagemRepository.java
+
+    @Query(value = "SELECT COUNT(DISTINCT vei_codigo) FROM agfrota.tb_via_viagem WHERE via_dt_saida BETWEEN :inicio AND :fim", nativeQuery = true)
+    Long contarVeiculosOperandoNoPeriodo(@Param("inicio") java.time.LocalDate inicio, @Param("fim") java.time.LocalDate fim);
+
+    @Query(value = "SELECT COUNT(via_codigo) FROM agfrota.tb_via_viagem WHERE vei_codigo = :veiculoId AND via_dt_saida BETWEEN :inicio AND :fim", nativeQuery = true)
+    Long contarViagensDoVeiculoNoPeriodo(@Param("veiculoId") Long veiculoId, @Param("inicio") java.time.LocalDate inicio, @Param("fim") java.time.LocalDate fim);
 }

@@ -4,8 +4,13 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.aguape.dto.*;
+import com.aguape.service.JasperService;
 import com.aguape.service.PainelService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
@@ -72,9 +77,33 @@ public class PainelController {
 
     @GetMapping("/indicadores")
     public ResponseEntity<ResumoPainelDTO> buscarIndicadores(
+            @RequestParam(required = false) Long veiculoId, // <-- Recebe o ID do veículo vindo do front
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim) {
 
-        return ResponseEntity.ok(painelService.gerarResumo(null, dataInicio, dataFim));
+        return ResponseEntity.ok(painelService.gerarResumo(veiculoId, dataInicio, dataFim));
+    }
+
+    @Autowired
+    private JasperService jasperService;
+
+    @GetMapping("/dashboard/pdf")
+    public ResponseEntity<byte[]> baixarPdfDashboard(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim,
+            @RequestParam(required = false) Long veiculoId) {
+
+        // 1. Coleta os mesmos dados exatos que o seu gráfico da tela usa
+        ResumoPainelDTO resumo = painelService.gerarResumo(veiculoId, dataInicio, dataFim);
+        StatusFrotaDTO status = painelService.calcularStatusFrota(veiculoId, dataInicio, dataFim);
+
+        // 2. Passa os dados dinâmicos para o gerador do Jasper
+        byte[] pdfBytes = jasperService.gerarRelatorioDashboard(dataInicio, dataFim, veiculoId, resumo, status);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("attachment", "relatorio-principal.pdf");
+
+        return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
     }
 }

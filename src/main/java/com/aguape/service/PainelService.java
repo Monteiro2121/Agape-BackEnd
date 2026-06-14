@@ -83,32 +83,44 @@ public class PainelService {
         }).toList();
     }
 
-    // 3. ERRO DA FUNCTIONAL INTERFACE RESOLVIDO: Removido o 'availability ->'
     public StatusFrotaDTO calcularStatusFrota(Long veiculoId, LocalDate dataInicio, LocalDate dataFim) {
         int operando = 0;
         int manutencao = 0;
         int parados = 0;
 
         if (veiculoId != null) {
-            var v = veiculoRepository.findById(veiculoId).orElse(null);
-            if (v != null) {
-                if (v.getStatus() == StatusOperacao.ATIVO) operando = 1;
-                else if (v.getStatus() == StatusOperacao.EM_MANUTENCAO) manutencao = 1;
-                else if (v.getStatus() == StatusOperacao.INATIVO) parados = 1;
+            // 1. Filtrado por um veículo específico
+            Long qtdViagens = viagemRepository.contarViagensDoVeiculoNoPeriodo(veiculoId, dataInicio, dataFim);
+
+            if (qtdViagens != null && qtdViagens > 0) {
+                operando = 1; // Se rodou no período, está operando
+            } else {
+                parados = 1;  // Se passou o período em branco, consideremos parado
             }
         } else {
-            Long op = veiculoRepository.countByStatus(StatusOperacao.ATIVO);
-            Long man = veiculoRepository.countByStatus(StatusOperacao.EM_MANUTENCAO);
-            Long par = veiculoRepository.countByStatus(StatusOperacao.INATIVO);
+            // 2. Visão geral (Todos os veículos)
+            Long totalFrotaLong = veiculoRepository.count(); // Total de veículos cadastrados
+            int totalFrota = (totalFrotaLong != null) ? totalFrotaLong.intValue() : 0;
 
+            Long op = viagemRepository.contarVeiculosOperandoNoPeriodo(dataInicio, dataFim);
             operando = (op != null) ? op.intValue() : 0;
-            manutencao = (man != null) ? man.intValue() : 0;
-            parados = (par != null) ? par.intValue() : 0;
+
+            // Garante que o número de operando não quebre se o banco tiver inconsistência
+            if (operando > totalFrota) {
+                totalFrota = operando;
+            }
+
+            // Como tudo é baseado em viagens, a sobra da frota entra como parado
+            parados = totalFrota - operando;
+            manutencao = 0; // Fica zerado por enquanto, já que não há histórico de O.S.
         }
 
+        // Calcula a porcentagem de disponibilidade real do período
         double disponibilidade = 0.0;
         int total = operando + manutencao + parados;
-        if (total > 0) disponibilidade = ((double) operando / total) * 100;
+        if (total > 0) {
+            disponibilidade = ((double) operando / total) * 100;
+        }
 
         return new StatusFrotaDTO(operando, manutencao, parados, disponibilidade);
     }

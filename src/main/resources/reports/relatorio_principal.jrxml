@@ -1,53 +1,139 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" name="RelatorioFrota" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RelatorioFrota" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 
-    <parameter name="periodo" class="java.lang.String"/>
-    <field name="custoMedioKm" class="java.lang.Double"/>
-    <field name="kmTotal" class="java.lang.Double"/>
-    <field name="viagensRealizadas" class="java.lang.Integer"/>
+    <parameter name="PERIODO" class="java.lang.String"/>
+    <parameter name="VEICULO_FILTRADO" class="java.lang.String"/>
+    <parameter name="CUSTO_MEDIO_KM" class="java.lang.Double"/>
+    <parameter name="KM_TOTAL" class="java.lang.Double"/>
+    <parameter name="TOTAL_VIAGENS" class="java.lang.Integer"/>
+    <parameter name="OPERANDO" class="java.lang.Integer"/>
+    <parameter name="MANUTENCAO" class="java.lang.Integer"/>
+    <parameter name="PARADOS" class="java.lang.Integer"/>
+    <parameter name="DISPONIBILIDADE" class="java.lang.Double"/>
 
     <title>
-        <band height="80">
+        <band height="90">
             <staticText>
                 <reportElement x="0" y="0" width="555" height="30"/>
-                <textElement textAlignment="Center"><font size="18" isBold="true"/></textElement>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="18" isBold="true"/>
+                </textElement>
                 <text><![CDATA[Relatório de Gestão de Frota]]></text>
             </staticText>
             <textField>
-                <reportElement x="0" y="30" width="555" height="20"/>
-                <textElement textAlignment="Center"><font size="12"/></textElement>
-                <textFieldExpression><![CDATA["Período: " + $P{periodo}]]></textFieldExpression>
+                <reportElement x="0" y="35" width="555" height="20"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression><![CDATA["Período: " + $P{PERIODO}]]></textFieldExpression>
+            </textField>
+            <textField isBlankWhenNull="true">
+                <reportElement x="0" y="55" width="555" height="20"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="10" isItalic="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{VEICULO_FILTRADO}]]></textFieldExpression>
             </textField>
         </band>
     </title>
 
     <detail>
-        <band height="150">
+        <band height="240">
             <staticText>
-                <reportElement x="0" y="10" width="200" height="20"/>
-                <text><![CDATA[Custo Médio por KM (R$):]]></text>
+                <reportElement x="0" y="10" width="555" height="20"/>
+                <textElement>
+                    <font size="14" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Resumo dos Indicadores]]></text>
             </staticText>
-            <textField>
-                <reportElement x="200" y="10" width="100" height="20"/>
-                <textFieldExpression><![CDATA[$F{custoMedioKm}]]></textFieldExpression>
-            </textField>
 
             <staticText>
                 <reportElement x="0" y="40" width="200" height="20"/>
-                <text><![CDATA[Quilometragem Total (KM):]]></text>
+                <textElement><font size="11"/></textElement>
+                <text><![CDATA[Custo Médio por KM (R$):]]></text>
             </staticText>
-            <textField>
-                <reportElement x="200" y="40" width="100" height="20"/>
-                <textFieldExpression><![CDATA[$F{kmTotal}]]></textFieldExpression>
+            <textField isBlankWhenNull="true">
+                <reportElement x="200" y="40" width="150" height="20"/>
+                <textElement><font size="11" isBold="true"/></textElement>
+                <textFieldExpression><![CDATA[$P{CUSTO_MEDIO_KM}]]></textFieldExpression>
             </textField>
 
             <staticText>
                 <reportElement x="0" y="70" width="200" height="20"/>
+                <textElement><font size="11"/></textElement>
+                <text><![CDATA[Quilometragem Total (KM):]]></text>
+            </staticText>
+            <textField isBlankWhenNull="true">
+                <reportElement x="200" y="70" width="150" height="20"/>
+                <textElement><font size="11" isBold="true"/></textElement>
+                <textFieldExpression><![CDATA[$P{KM_TOTAL}]]></textFieldExpression>
+            </textField>
+
+            <staticText>
+                <reportElement x="0" y="100" width="200" height="20"/>
+                <textElement><font size="11"/></textElement>
                 <text><![CDATA[Viagens Realizadas:]]></text>
             </staticText>
-            <textField>
-                <reportElement x="200" y="70" width="100" height="20"/>
-                <textFieldExpression><![CDATA[$F{viagensRealizadas}]]></textFieldExpression>
+            <textField isBlankWhenNull="true">
+                <reportElement x="200" y="100" width="150" height="20"/>
+                <textElement><font size="11" isBold="true"/></textElement>
+                <textFieldExpression><![CDATA[$P{TOTAL_VIAGENS}]]></textFieldExpression>
+            </textField>
+
+            <line>
+                <reportElement x="0" y="135" width="555" height="1"/>
+            </line>
+
+            <staticText>
+                <reportElement x="0" y="145" width="555" height="20"/>
+                <textElement>
+                    <font size="14" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Status da Frota]]></text>
+            </staticText>
+
+            <staticText>
+                <reportElement x="0" y="175" width="120" height="20"/>
+                <textElement><font size="11"/></textElement>
+                <text><![CDATA[Veículos Operando:]]></text>
+            </staticText>
+            <textField isBlankWhenNull="true">
+                <reportElement x="120" y="175" width="80" height="20"/>
+                <textElement><font size="11" isBold="true"/></textElement>
+                <textFieldExpression><![CDATA[$P{OPERANDO}]]></textFieldExpression>
+            </textField>
+
+            <staticText>
+                <reportElement x="200" y="175" width="120" height="20"/>
+                <textElement><font size="11"/></textElement>
+                <text><![CDATA[Em Manutenção:]]></text>
+            </staticText>
+            <textField isBlankWhenNull="true">
+                <reportElement x="320" y="175" width="80" height="20"/>
+                <textElement><font size="11" isBold="true"/></textElement>
+                <textFieldExpression><![CDATA[$P{MANUTENCAO}]]></textFieldExpression>
+            </textField>
+
+            <staticText>
+                <reportElement x="410" y="175" width="80" height="20"/>
+                <textElement><font size="11"/></textElement>
+                <text><![CDATA[Parados:]]></text>
+            </staticText>
+            <textField isBlankWhenNull="true">
+                <reportElement x="490" y="175" width="65" height="20"/>
+                <textElement><font size="11" isBold="true"/></textElement>
+                <textFieldExpression><![CDATA[$P{PARADOS}]]></textFieldExpression>
+            </textField>
+
+            <staticText>
+                <reportElement x="0" y="205" width="120" height="20"/>
+                <textElement><font size="11"/></textElement>
+                <text><![CDATA[Disponibilidade:]]></text>
+            </staticText>
+            <textField isBlankWhenNull="true">
+                <reportElement x="120" y="205" width="150" height="20"/>
+                <textElement><font size="11" isBold="true"/></textElement>
+                <textFieldExpression><![CDATA[$P{DISPONIBILIDADE} + "%"]]></textFieldExpression>
             </textField>
         </band>
     </detail>
